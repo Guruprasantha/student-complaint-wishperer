@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+        #Row1 {
+            background: #0f0f0f;
+            color:#fff;
+            height:220px;
+            margin-top:15px;
+          }
+          
+          #Row2 {
+            height:350px;
+            margin-top:15px;
+          }
+          .card{
+            border: 1px solid rgba(0, 0, 0, 0)!important;
+          }
+          .carousel {
+            background: #EEE;
+          }
+          
+          .carousel-cell {
+            width: 15%;
+            height: 300px;
+            min-width:180px;
+            margin-right: 2px;
+            background: #8C8;
+            border-radius: 5px;
+            counter-increment: carousel-cell;
+          }
+          
+          .carousel-cell.is-selected {
+            background: #21e6a3;
+          }
+          
+          /* cell number */
+          .carousel-cell:before {
+            display: block;
+            text-align: center;
+            content: counter(carousel-cell);
+            line-height: 200px;
+            font-size: 80px;
+            color: white;
+          }
+        </style>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    </head>
+<body>
+    
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">STUDENT COMPLAINT MANAGEMENT SYSTEM</a>
+  
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Admin Page <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'logout' %}"> Logout</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'complaintstaken' %}">View Complaints Take</a>
+        </li>
+      </ul>
+      
+    </div>
+  </nav>
+  <div class="container-fluid"> 
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="card">
+          <div class="card-body" id="Row1">
+            <h5 class="card-title">Complaint registered</h5>
+            <p class="card-text" style="font-size:6em;text-align:center;margin-top:-20px">{{tc}} </p>
+          </div>
+        </div>
+      </div>
+          <div class="col-sm-4">
+        <div class="card">
+          <div class="card-body" id="Row1">
+            <h5 class="card-title">action taken</h5>
+            <p class="card-text" style="font-size:6em;text-align:center;margin-top:-20px">{{acttaken}} <i class="fa fa-arrow-down" aria-hidden="true"></i></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+        <div class="card">
+          <div class="card-body" id="Row1">
+            <h5 class="card-title">pending action</h5>
+            <p class="card-text" style="font-size:6em;text-align:center;margin-top:-20px">{{pending}}</p>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="col-sm-6" >
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d222956.1460761856!2d-82.29689329564486!3d29.173812511425073!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x88e62b541cba3ce5%3A0xf5f53be4b1380536!2sOcala%2C+FL!5e0!3m2!1sen!2sus!4v1563387105323!5m2!1sen!2sus" width="100%" height="100%" frameborder="0" style="border:0" id="Row2" allowfullscreen></iframe>
+      </div> -->
+      <div class="col-sm-12">    
+        <table class="table">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">S.NO</th>
+              <th scope="col">Name </th>  
+              <th scope="col">Contact </th>
+              <th scope="col">Complaint </th>
+              <th scope="col">Complaint Description</th>
+              <th scope="col">Complaint Date</th>
+              <th scope="col" >Result</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for i in data %}
+            <tr>
+              <th scope="row">{{ forloop.counter }} </th>
+              <td>{{i.name }} </td>
+              <td>{{i.mobno}} </td>
+              <td>{{i.comcat}} </td>
+              <td>{{i.comdis}} </td>
+              <td>{{i.comdt}} </td>
+              <td>{{i.acta}} </td>
+              {% if i.acta == 'Pending' %}
+              <td><a href="{% url 'action' id=i.id %}"> <button type="button" class="btn btn-primary">Take action</button></a> </td>
+              {% else %}
+              <td><h3 class="btn btn-secondary" >Action taken</h3> </td>
+              {% endif %}
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</body>
+  </html>
